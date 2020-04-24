@@ -1,0 +1,26 @@
+defaults = {}
+defaults.player = {}
+defaults.player.pos = {}
+defaults.player.stroke = {}
+defaults.player.flags = {}
+defaults.player.flags.bold = true
+defaults.player.stroke.alpha = 200
+defaults.player.stroke.width = 1
+defaults.player.stroke.red = 0
+defaults.player.stroke.blue = 0
+defaults.player.stroke.green = 50
+defaults.player.pos.x = 250
+defaults.player.pos.y = 900  
+defaults.player.text = {}
+defaults.player.text.font = 'Segoe UI'
+defaults.player.text.size = 11
+defaults.player.text.alpha = 255
+defaults.player.text.red = 119
+defaults.player.text.green = 247
+defaults.player.text.blue = 237
+defaults.player.bg = {}
+defaults.player.bg.alpha = 0
+defaults.player.bg.red = 3
+defaults.player.bg.green = 1
+defaults.player.bg.blue = 1
+
