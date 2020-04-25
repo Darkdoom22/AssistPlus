@@ -178,7 +178,7 @@ end
 function Assist()
 
  
-  if Validate_Assist_Player() == true and Running == true and Use_Leader == true then
+  if Validate_Assist_Player() == true and Running == true then
     
     local cur_mob = windower.ffxi.get_mob_by_target('bt')
     local player = windower.ffxi.get_player()
