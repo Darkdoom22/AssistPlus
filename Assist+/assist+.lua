@@ -1,6 +1,6 @@
 _addon.name = "Assist+"
 _addon.author = "Uwu/Darkdoom"
-_addon.version = "1.0a"
+_addon.version = "1.1a"
 _addon.command = "ass"
 
 Entity_Helper = require('UwuLibs/Entity_Helper')
