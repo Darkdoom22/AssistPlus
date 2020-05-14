@@ -115,6 +115,19 @@ windower.register_event('ipc message', function(msg)
   
     end
   
+  elseif msg:sub(-1) == "33" then
+  
+    modified = msg:gsub("3","")
+    ret_mod = modified .. "Resting"
+    
+    if not Table_Helper.has_value(Chars, ret_mod) then
+      
+    table.insert(Chars, ret_mod)
+    
+    end
+    
+  
+  
   end
   
   for k,v in pairs(Chars) do
@@ -137,12 +150,26 @@ function Display_Box()
   if Chars ~= nil then
    
     local player = windower.ffxi.get_player()
-    local engage_text = "Char   |   Status\n" .. Entity_Helper.get_name(player) .. " ~ " .. Entity_Helper.get_engaged_as_string(player) .. "\n" .. string
-    
-    if engage_text ~= nil then
+
+    if Entity_Helper.get_engaged_as_string(player) == "Idle" or Entity_Helper.get_engaged_as_string(player) == "Engaged" then
       
-      Status_Box:text(engage_text)
-      Status_Box:visible(true)
+    local engage_text = "Char   |   Status\n" .. Entity_Helper.get_name(player) .. " ~ " ..       Entity_Helper.get_engaged_as_string(player) .. "\n" .. string
+   
+    Status_Box:text(engage_text)
+
+    elseif Entity_Helper.get_engaged_as_string(player) ~= "Idle" or Entity_Helper.get_engaged_as_string(player) ~= "Engaged" then
+    
+    local engage_text = "Char   |   Status\n" .. Entity_Helper.get_name(player) .. " ~ " .. "Unknown Status" .. "\n" .. string
+  
+    Status_Box:text(engage_text)
+  
+  
+      if engage_text ~= nil then
+      
+        Status_Box:text(engage_text)
+        Status_Box:visible(true)
+    
+      end
     
     end
   
@@ -178,7 +205,7 @@ end
 function Assist()
 
  
-  if Validate_Assist_Player() == true and Running == true then
+  if Validate_Assist_Player() == true and Running == true and Use_Leader == true then
     
     local cur_mob = windower.ffxi.get_mob_by_target('bt')
     local player = windower.ffxi.get_player()
@@ -186,7 +213,7 @@ function Assist()
     
     if cur_mob ~= nil then
       
-      if Target_Helper.valid(cur_mob) == false then
+      if Target_Helper.valid(cur_mob) == false then 
         
       cur_mob = 0
       
@@ -194,12 +221,12 @@ function Assist()
     
   end
     
-    if cur_mob ~= nil and Target_Helper.valid(cur_mob) == true and Claimer_ID == Player_Lead_ID and status == 0 and Target_Helper.target_distance(cur_mob) < 20 and Use_Leader == true then
+    if cur_mob ~= nil and Target_Helper.valid(cur_mob) == true and Claimer_ID == Player_Lead_ID and status == 0 and Target_Helper.target_distance(cur_mob) < 20 and Use_Leader == true and Entity_Helper.hpp(cur_mob) ~= 0 then
 
     local Engage = Target_Helper.engage_target(cur_mob)
     packets.inject(Engage)
 
-    elseif cur_mob ~= nil and Target_Helper.valid(cur_mob) == true and Target_Helper.target_distance(cur_mob) < 15 and Use_Leader == false then
+    elseif cur_mob ~= nil and Target_Helper.valid(cur_mob) == true and Target_Helper.target_distance(cur_mob) < 20 and Use_Leader == false then
     
     local Engage = Target_Helper.engage_target(cur_mob)
     packets.inject(Engage)
@@ -217,10 +244,14 @@ function Assist()
       
       windower.send_ipc_message(Entity_Helper.get_name(player) ..  " ~ " .. status)
       
-      if Target_Helper.target_distance(cur_mob) >= 1.3 then
+      if Target_Helper.target_distance(cur_mob) >= .5 then
       
         W_Input.chat("/follow")
         Target_Helper.face(cur_mob)
+              
+      elseif Target_Helper.target_hpp(cur_mob) < 10 then
+      
+      Entity_Helper.cancel_movement()
               
       end
       
